@@ -12,8 +12,8 @@ class CreateJobsTable extends Migration {
    */
   public function up() {
     Schema::create('jobs', function (Blueprint $table) {
-      $table->uuid('id')->primary();
-      $table->string('name');
+      $table->increments('id');
+      $table->string('name', 36)->unique();
       $table->string('description');
       $table->timestamps();
     });

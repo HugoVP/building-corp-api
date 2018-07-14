@@ -12,14 +12,13 @@ class CreateWorkersTable extends Migration {
    */
   public function up() {
     Schema::create('workers', function (Blueprint $table) {
-      $table->uuid('id')->primary();
-      $table->uuid('job_worker_id');
+      $table->increments('id');
       $table->string('firstname');
       $table->string('lastname');
-      $table->string('address');
+      $table->string('street_name');
       $table->string('zip_code');
-      $table->double('salary', 15, 4)->unsigned();
-      $table->boolean('has_social_security')->default(0);
+      $table->uuid('photo');
+      $table->timestamps();
     });
   }
 

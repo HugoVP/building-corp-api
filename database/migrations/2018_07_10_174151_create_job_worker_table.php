@@ -11,23 +11,33 @@ class CreateJobWorkerTable extends Migration {
    * @return void
    */
   public function up() {
-    Schema::create('job_worker', function (Blueprint $table) {
-      $table->uuid('id');
-      $table->uuid('job_id');
-      $table->uuid('worker_id');
+    Schema::create('contracts', function (Blueprint $table) {
+      $table->increments('id');
+      $table->integer('worker_id')->unsigned();
+      $table->integer('job_id')->unsigned();
       $table->date('start_date');
       $table->date('end_date');
+      $table->date('termination_date')->nullable();
+     
+      $table->enum('status', [
+        'ACTIVE',
+        'EXPIRED',
+        'CANCELED',
+      ]);
+     
+      $table->double('salary', 15, 4)->unsigned();
+      $table->boolean('with_social_security')->default(true);
       $table->timestamps();
     });
 
-    Schema::table('job_worker', function (Blueprint $table) {
-      $table
-        ->foreign('job_id')->references('id')->on('jobs')
-        ->onDelete('restrict')
-        ->onUpdate('restrict');
-
+    Schema::table('contracts', function (Blueprint $table) {
       $table
         ->foreign('worker_id')->references('id')->on('workers')
+        ->onDelete('restrict')
+        ->onUpdate('restrict');
+      
+      $table
+        ->foreign('job_id')->references('id')->on('jobs')
         ->onDelete('restrict')
         ->onUpdate('restrict');
     });
@@ -39,12 +49,12 @@ class CreateJobWorkerTable extends Migration {
    * @return void
    */
   public function down() {
-    Schema::table('job_worker', function (Blueprint $table) {
+    Schema::table('contracts', function (Blueprint $table) {
       $table
-        ->dropForeign('job_worker_job_id_foreign')
-        ->dropForeign('job_worker_worker_id_foreign');
+        ->dropForeign('contracts_job_id_foreign')
+        ->dropForeign('contracts_worker_id_foreign');
     });
 
-    Schema::dropIfExists('job_worker');
+    Schema::dropIfExists('contracts');
   }
 }
