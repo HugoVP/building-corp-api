@@ -14,3 +14,10 @@
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+
+$router->group(['prefix' => 'workers'], function () use ($router) {
+  $router->get('/', 'WorkerController@index');
+  $router->get('/{id}', 'WorkerController@show');
+  $router->post('/', 'WorkerController@store');
+  $router->put('/{id}', 'WorkerController@update');
+});
