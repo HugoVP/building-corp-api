@@ -21,3 +21,10 @@ $router->group(['prefix' => 'workers'], function () use ($router) {
   $router->post('/', 'WorkerController@store');
   $router->put('/{id}', 'WorkerController@update');
 });
+
+$router->group(['prefix' => 'contracts'], function () use ($router) {
+  $router->get('/', 'ContractController@index');
+  $router->get('/{id}', 'ContractController@show');
+  $router->post('/', 'ContractController@store');
+  $router->put('/{id}', 'ContractController@update');
+});
